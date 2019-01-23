@@ -15,9 +15,10 @@ namespace Messenger.Domain.Services
         private readonly MessengerContext _context;
         private readonly IMapper _mapper;
 
-        public MessageService(MessengerContext context)
+        public MessageService(MessengerContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<MessageDto> AddMessage(AddMessageDto message)

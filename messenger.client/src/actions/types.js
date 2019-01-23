@@ -1,0 +1,11 @@
+// Messages
+
+export const MESSAGE_ADDED = 'MESSAGE_ADDED';
+export const MESSAGE_FETCHED = 'MESSAGE_FETCHED';
+
+// Private conversations
+
+export const USER_CONNECTED = 'USER_CONNECTED';
+export const USER_DISCONNECTED = 'USER_DISCONNECTED';
+export const GET_ALL_CONVERSATIONS = 'GET_ALL_CONVERSATIONS';
+export const PRIVATE_MESSAGE_ADDED = 'PRIVATE_MESSAGE_ADDED';

@@ -11,6 +11,7 @@ namespace Messenger.Domain
     public class MessengerContext : DbContext
     {
         public DbSet<Message> Messages { get; set; }
+        public DbSet<PrivateMessage> PrivateMessages { get; set; }
 
         public MessengerContext(DbContextOptions options) : base(options)
         {

@@ -4,14 +4,16 @@ using Messenger.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Messenger.Domain.Migrations
 {
     [DbContext(typeof(MessengerContext))]
-    partial class MessengerContextModelSnapshot : ModelSnapshot
+    [Migration("20190110185744_DateCreated")]
+    partial class DateCreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,25 +36,6 @@ namespace Messenger.Domain.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Messenger.Domain.Models.PrivateMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime?>("DateCreated");
-
-                    b.Property<string>("From");
-
-                    b.Property<string>("To");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PrivateMessages");
                 });
 #pragma warning restore 612, 618
         }

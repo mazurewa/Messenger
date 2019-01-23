@@ -10,6 +10,9 @@ namespace Messenger.Domain.Mappings
         {
             CreateMap<Message, MessageDto>();
             CreateMap<AddMessageDto, Message>();
+
+            CreateMap<PrivateMessage, PrivateMessageDto>();
+            CreateMap<AddPrivateMessageDto, PrivateMessage>();
         }
     }
 }

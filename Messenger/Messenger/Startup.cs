@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace Messenger
 {
@@ -25,6 +26,8 @@ namespace Messenger
             services.AddDbContext<MessengerContext>(o => o.UseSqlServer(connectionString));
 
             services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IPrivateMessageService, PrivateMessageService>();
+            services.AddSingleton<IUserManager>(new UserManager(new List<LoggedUser>()));
 
             services.AddAutoMapper();
             services.AddSignalR();
@@ -46,6 +49,8 @@ namespace Messenger
             .AllowCredentials());
 
             app.UseSignalR(builder => builder.MapHub<MessageHub>("/hub/chat"));
+            app.UseSignalR(builder => builder.MapHub<PrivateMessageHub>("/hub/privateChat"));
+
             app.UseMvc();
         }
     }
