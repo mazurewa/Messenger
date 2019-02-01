@@ -8,6 +8,9 @@ import {getAllConversations, userConnected, userDisconnected, privateMessageAdde
 class PrivateChat extends React.Component {
     constructor() {
         super();
+        this.state = {
+            activeParticipant: null
+        }
 
         this.connection = new SignalR.HubConnectionBuilder()
             .withUrl('https://localhost:44319/hub/privatechat')
@@ -22,11 +25,27 @@ class PrivateChat extends React.Component {
         this.connection.stop().then(() => console.log('connection stopped'));
     }
 
+    onClick = participant => {
+        this.setState({activeParticipant: participant});
+    }
+
     setUpConnection = () => {
         this.connection.on('selfConnected', conversations => {
             this.props.getAllConversations(conversations);
-            console.log(this.props.privateConversations);
         })
+
+        this.connection.on('messageAdded', message => {
+            this.props.privateMessageAdded(message);
+        })
+
+        this.connection.on('newUserConnected', username => {
+            this.props.userConnected(username);
+        })
+
+        this.connection.on('userDisconnected', username => {
+            this.props.userDisconnected(username);
+        })
+
         this.connection
             .start()
             .then(() => this.connection.invoke('connect', this.getUsername()))
@@ -38,14 +57,25 @@ class PrivateChat extends React.Component {
         return localStorage.getItem('username');
     }
 
+    getActiveConversation = () => {
+        const activeConversation = this.props.privateConversations.find(con => con.to === this.state.activeParticipant);
+        console.log('active');
+        console.log(this.props.privateConversations)
+        return activeConversation;
+    }
+
+    handleSend = (message) => {
+        this.connection.invoke('sendMessage', {to: this.state.activeParticipant, from: this.getUsername(), content: message});
+    }
+
     render() {
         return (
         <div className="row pt-3">
             <div className="col-3">
-                <Conversation conversations={this.props.privateConversations}/>
+                <Conversation conversations={this.props.privateConversations} onClick={this.onClick}/>
             </div>
             <div className="col-9">
-                <ActiveConversation/>
+                <ActiveConversation onSend={this.handleSend} conversation={this.getActiveConversation()}/>
             </div>
         </div>
         )
